@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace TicTacToeGame
 {
@@ -6,6 +6,8 @@ namespace TicTacToeGame
     {
         public static ArrayList Ppos1 = new ArrayList();
         public static ArrayList Ppos2 = new ArrayList();
+        public static ArrayList Cpos2 = new ArrayList();
+
 
         static void Main(string[] args)
         {
@@ -18,43 +20,80 @@ namespace TicTacToeGame
                 new char[] { '7', '|', '8', '|', '9' }
             };
             
+            Console.WriteLine("if you want to play with cpu press 'C' and if you want 1vs1 press 'P' ");
+            char s1 = Convert.ToChar(Console.ReadLine());
             PrintBoard(board);
             while (true)
             {
-
-                /*----------------Player 1 turn----------------*/
-
-                Console.WriteLine("Player 1 enter your position: ");
-                var p1 = Convert.ToInt32(Console.ReadLine());
-                while (Ppos2.Contains(p1) || Ppos1.Contains(p1) || p1 > 9 || p1 < 1) //to check that the position is unique
-                {
-                    Console.WriteLine("Wrong input enter another position");
-                    p1 = Convert.ToInt32(Console.ReadLine());
-                }
-
                 
-                placeOnBoard(board, p1, "Player1"); //to place the input
-                PrintBoard(board);
-                Console.WriteLine(); //spaces
-                Console.WriteLine(); //spaces
-                Console.WriteLine(CheckWin());
 
-                /*----------------Player 2 turn----------------*/
-
-                Console.WriteLine("Player 2 enter your position: ");
-                p1 = Convert.ToInt32(Console.ReadLine());
-                while (Ppos2.Contains(p1) || Ppos1.Contains(p1) || p1 > 9 || p1 <1) //to check that the position is unique
+                if (s1 == 'C' || s1 == 'c') // Player vs CPU
                 {
-                    Console.WriteLine("Wrong input enter another position");
-                    p1 = Convert.ToInt32(Console.ReadLine());
-                }
-                placeOnBoard(board, p1, "Player2"); //to place the input
-                PrintBoard(board);
-                Console.WriteLine(); //spaces
-                Console.WriteLine(); //spaces
-                Console.WriteLine(CheckWin());
-            }
+                    /*----------------Player turn----------------*/
+                    Console.WriteLine("Player 1 enter your position: ");
+                    var p1 = Convert.ToInt32(Console.ReadLine());
+                    while (Cpos2.Contains(p1) || Ppos1.Contains(p1) || p1 > 9 || p1 < 1) //to check that the position is unique
+                    {
+                        Console.WriteLine("Wrong input enter another position");
+                        p1 = Convert.ToInt32(Console.ReadLine());
+                    }
+                    placeOnBoard(board, p1, "Player1"); //to place the input
+                    Console.WriteLine(CheckWin());
 
+                    /*----------------CPU turn----------------*/
+
+                    Random rand = new Random();
+                    int c = rand.Next(1,9);
+                    
+                    while (Cpos2.Contains(c) || Ppos1.Contains(c) || p1 > 9 || p1 < 1) //to check that the position is unique
+                    {
+                        c = rand.Next(1, 9);
+                    }
+                    placeOnBoard(board, c, "Player2"); //to place the input
+                    PrintBoard(board);
+                    Console.WriteLine(CheckWin());
+
+                }
+                else if (s1 == 'P' || s1 == 'p')// Player1 vs Player2
+                {
+                    while (true)
+                    {
+
+                        /*----------------Player 1 turn----------------*/
+
+                        Console.WriteLine("Player 1 enter your position: ");
+                        var p1 = Convert.ToInt32(Console.ReadLine());
+                        while (Ppos2.Contains(p1) || Ppos1.Contains(p1) || p1 > 9 || p1 < 1) //to check that the position is unique
+                        {
+                            Console.WriteLine("Wrong input enter another position");
+                            p1 = Convert.ToInt32(Console.ReadLine());
+                        }
+
+
+                        placeOnBoard(board, p1, "Player1"); //to place the input
+                        PrintBoard(board);
+                        Console.WriteLine(); //spaces
+                        Console.WriteLine(); //spaces
+                        Console.WriteLine(CheckWin());
+
+                        /*----------------Player 2 turn----------------*/
+
+                        Console.WriteLine("Player 2 enter your position: ");
+                        p1 = Convert.ToInt32(Console.ReadLine());
+                        while (Ppos2.Contains(p1) || Ppos1.Contains(p1) || p1 > 9 || p1 < 1) //to check that the position is unique
+                        {
+                            Console.WriteLine("Wrong input enter another position");
+                            p1 = Convert.ToInt32(Console.ReadLine());
+                        }
+                        placeOnBoard(board, p1, "Player2"); //to place the input
+                        PrintBoard(board);
+                        Console.WriteLine(); //spaces
+                        Console.WriteLine(); //spaces
+                        Console.WriteLine(CheckWin());
+                    }
+                }
+               
+            }
         }
 
         public static string CheckWin()
@@ -70,6 +109,12 @@ namespace TicTacToeGame
                 Ppos2.Contains(3) && Ppos2.Contains(5) && Ppos2.Contains(7))
             {
                 return "Player 2 wins";
+            }
+            else if (Cpos2.Contains(1) && Cpos2.Contains(2) && Cpos2.Contains(3) || Cpos2.Contains(4) && Cpos2.Contains(5) && Cpos2.Contains(6) ||
+               Cpos2.Contains(7) && Cpos2.Contains(8) && Cpos2.Contains(9) || Cpos2.Contains(1) && Cpos2.Contains(5) && Cpos2.Contains(9) ||
+               Cpos2.Contains(3) && Cpos2.Contains(5) && Cpos2.Contains(7))
+            {
+                return "CPU wins";
             }
             else if (Ppos1.Count + Ppos2.Count == 9)
             {
